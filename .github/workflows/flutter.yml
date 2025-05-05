@@ -1,0 +1,42 @@
+name: Flutter Build
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"  
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.24.0
+    - name: Get Deps
+      run: flutter pub get
+    - name: Flutter Test
+      run: flutter test
+    - name: Build Web
+      run: flutter build web
+    - name: Build Android
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+      run: |
+        flutter build apk
+        flutter build appbundle
+        flutter build linux
+    - name: Build Windows
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: flutter build windows
+    - name: Build MacOS & IOS
+      if: ${{ matrix.os == 'macos-latest' }}
+      run: |
+        flutter build macos
+        flutter build ios --release --no-codesign

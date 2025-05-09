@@ -41,3 +41,11 @@ jobs:
       run: |
         # flutter build macos
         flutter build ios --release --no-codesign
+    - name: GitHub Pages action
+      if: ${{ github.event_name == 'push' }}
+      uses: peaceiris/actions-gh-pages@v4.0.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: 'build/web'
+        user_name: 'Bervianto Leo Pratama'
+        user_email: 'bervianto.leo@gmail.com'

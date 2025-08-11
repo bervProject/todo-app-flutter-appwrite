@@ -34,7 +34,7 @@ jobs:
         flutter build appbundle
     - name: Build Linux
       if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: sudo apt install libgtk-3-dev && flutter build linux
+      run: sudo apt update && sudo apt install libgtk-3-dev && flutter build linux
     - name: Build Windows
       if: ${{ matrix.os == 'windows-latest' }}
       run: flutter build windows
